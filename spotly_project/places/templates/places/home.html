@@ -1,0 +1,145 @@
+{% extends 'places/base.html' %}
+
+{% block content %}
+
+<div class="page">
+    <div class="container">
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div>
+            <div class="tag">DISCOVER YOUR NEXT SPOT</div>
+
+            <h1>Find places worth remembering.</h1>
+
+            <p>
+                Explore hidden gems, beautiful destinations and real
+                experiences shared by the Spotly community.
+            </p>
+
+            <!-- Search -->
+            <form class="searchbar" action="{% url 'explore' %}">
+                <input
+                    type="text"
+                    name="q"
+                    placeholder="Search Munnar, beaches, waterfalls..."
+                >
+
+                <button type="submit">Explore</button>
+            </form>
+        </div>
+    </section>
+
+
+    <!-- Browse by Vibe -->
+    <section class="section">
+
+        <div class="section-head">
+            <h2>Browse by vibe</h2>
+
+            <a class="muted" href="{% url 'explore' %}">
+                View all →
+            </a>
+        </div>
+
+        <div class="chips">
+
+            {% for c in categories %}
+
+                <a
+                    class="chip"
+                    href="{% url 'explore' %}?category={{ c.slug }}"
+                >
+                    {{ c.name }}
+                </a>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+
+    <!-- Featured Spots -->
+    {% if featured %}
+
+    <section class="section">
+
+        <div class="section-head">
+            <h2>Featured spots</h2>
+
+            <a class="muted" href="{% url 'explore' %}">
+                Explore all →
+            </a>
+        </div>
+
+        <div class="grid">
+
+            {% for p in featured %}
+
+                {% include 'places/partials/place_card.html' with place=p %}
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+    {% endif %}
+
+
+    <!-- Trending Now -->
+    <section class="section">
+
+        <div class="section-head">
+            <h2>Trending now</h2>
+
+            <a class="muted" href="{% url 'explore' %}">
+                See more →
+            </a>
+        </div>
+
+        <div class="grid">
+
+            {% for p in trending %}
+
+                {% include 'places/partials/place_card.html' with place=p %}
+
+            {% empty %}
+
+                <div class="empty">
+                    New trending spots are coming soon.
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+
+    <!-- Recently Added -->
+    <section class="section">
+
+        <div class="section-head">
+            <h2>Recently added</h2>
+        </div>
+
+        <div class="grid">
+
+            {% for p in recent %}
+
+                {% include 'places/partials/place_card.html' with place=p %}
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+</div>
+```
+
+</div>
+
+{% endblock %}

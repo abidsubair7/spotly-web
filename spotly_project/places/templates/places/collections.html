@@ -1,0 +1,101 @@
+
+{% extends 'places/base.html' %}
+
+{% block content %}
+
+<div class="page">
+    <div class="container">
+
+        <!-- Collections Header -->
+        <div class="section-head">
+
+            <div>
+                <div class="tag">
+                    YOUR SPACE
+                </div>
+
+                <h1 style="font-size: clamp(42px, 6vw, 65px); letter-spacing: -3px; margin: 8px 0;">
+                    Saved places.
+                </h1>
+
+                <p class="muted">
+                    Keep your favourite discoveries in one place.
+                </p>
+            </div>
+
+            <a class="btn" href="{% url 'collection_create' %}">
+                + New collection
+            </a>
+
+        </div>
+
+
+        <!-- Collections -->
+        <div class="grid">
+
+            {% for c in collections %}
+
+                <a class="card" href="{% url 'collection_detail' c.pk %}">
+
+                    <div class="placeholder">
+                        🗺️
+                    </div>
+
+                    <div class="cardbody">
+
+                        <h3>
+                            {{ c.name }}
+                        </h3>
+
+                        <p class="muted">
+                            {{ c.count }} saved places
+                        </p>
+
+                    </div>
+
+                </a>
+
+            {% empty %}
+
+                <div class="empty">
+                    Create your first collection.
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        <!-- Saved Spots -->
+        <section class="section">
+
+            <div class="section-head">
+                <h2>
+                    Saved spots
+                </h2>
+            </div>
+
+
+            <div class="grid">
+
+                {% for item in saved %}
+
+                    {% include 'places/partials/place_card.html' with place=item.place %}
+
+                {% empty %}
+
+                    <div class="empty">
+                        You haven't saved any spots yet.
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+    </div>
+</div>
+
+{% endblock %}
+

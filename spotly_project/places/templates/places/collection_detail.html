@@ -1,0 +1,48 @@
+
+{% extends 'places/base.html' %}
+
+{% block content %}
+
+<div class="page">
+    <div class="container">
+
+        <div class="section-head">
+
+            <div>
+                <div class="tag">
+                    COLLECTION
+                </div>
+
+                <h1 style="font-size: 52px; margin: 8px 0;">
+                    {{ collection.name }}
+                </h1>
+
+                <p class="muted">
+                    {{ collection.description }}
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="grid">
+
+            {% for item in collection.items.all %}
+
+                {% include 'places/partials/place_card.html' with place=item.place %}
+
+            {% empty %}
+
+                <div class="empty">
+                    No places in this collection yet.
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+

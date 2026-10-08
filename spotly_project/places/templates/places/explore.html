@@ -1,0 +1,103 @@
+
+{% extends 'places/base.html' %}
+
+{% block content %}
+
+<div class="page">
+    <div class="container">
+
+        <!-- Page Header -->
+        <div class="section-head">
+
+            <div>
+                <div class="tag">
+                    EXPLORE
+                </div>
+
+                <h1 style="font-size: clamp(42px, 6vw, 68px); letter-spacing: -3px; margin: 8px 0;">
+                    Places worth finding.
+                </h1>
+            </div>
+
+        </div>
+
+
+        <!-- Search -->
+        <form class="searchbar" method="get">
+
+            <input
+                type="text"
+                name="q"
+                value="{{ q }}"
+                placeholder="Search places, locations or experiences..."
+            >
+
+            {% if cat %}
+                <input
+                    type="hidden"
+                    name="category"
+                    value="{{ cat }}"
+                >
+            {% endif %}
+
+            <button type="submit">
+                Search
+            </button>
+
+        </form>
+
+
+        <!-- Categories -->
+        <div class="chips" style="margin: 25px 0 42px;">
+
+            <a
+                class="chip {% if not cat %}active{% endif %}"
+                href="{% url 'explore' %}{% if q %}?q={{ q|urlencode }}{% endif %}"
+            >
+                All
+            </a>
+
+            {% for c in categories %}
+
+                <a
+                    class="chip {% if cat == c.slug %}active{% endif %}"
+                    href="?category={{ c.slug }}{% if q %}&q={{ q|urlencode }}{% endif %}"
+                >
+                    {{ c.name }}
+                </a>
+
+            {% endfor %}
+
+        </div>
+
+
+        <!-- Places -->
+        <div class="grid">
+
+            {% for place in places %}
+
+                {% include 'places/partials/place_card.html' with place=place %}
+
+            {% empty %}
+
+                <div class="empty">
+
+                    <h3>
+                        No spots found
+                    </h3>
+
+                    <p>
+                        Try another search or category.
+                    </p>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+

@@ -1,0 +1,1 @@
+{% extends 'places/base.html' %}{% block content %}<div class="page"><div class="formbox"><div class="tag">JOIN SPOTLY</div><h1>Create your account.</h1><form method="post">{% csrf_token %}{{form.as_p}}<button class="btn" style="width:100%">Create account</button></form><p class="muted">Already have an account? <a href="{% url 'login' %}">Login</a></p></div></div>{% endblock %}

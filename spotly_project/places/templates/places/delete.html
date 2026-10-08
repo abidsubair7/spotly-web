@@ -1,0 +1,37 @@
+
+{% extends 'places/base.html' %}
+
+{% block content %}
+
+<div class="page">
+
+    <div class="formbox">
+
+        <h1>
+            Delete {{ object.name }}?
+        </h1>
+
+        <p class="muted">
+            This cannot be undone.
+        </p>
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            <button type="submit" class="btn danger">
+                Delete
+            </button>
+
+            <a class="btn ghost" href="{% url 'place_detail' object.pk %}">
+                Cancel
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}
+

@@ -1,0 +1,1 @@
+{% extends 'places/base.html' %}{% block content %}<div class="page"><div class="formbox"><div class="tag">{{eyebrow|default:'SPOTLY'}}</div><h1>{{title}}</h1><form method="post" enctype="multipart/form-data">{% csrf_token %}{{form.as_p}}<button class="btn">Save changes</button></form></div></div>{% endblock %}

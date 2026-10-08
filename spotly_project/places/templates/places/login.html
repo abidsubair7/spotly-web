@@ -1,0 +1,73 @@
+
+{% extends 'places/base.html' %}
+
+{% block content %}
+
+<div class="page">
+
+    <div class="formbox">
+
+        <div class="tag">
+            WELCOME BACK
+        </div>
+
+        <h1>
+            Sign in to Spotly.
+        </h1>
+
+
+        <!-- Google Login -->
+        <a class="google-btn" href="{% url 'google_login' %}">
+            G&nbsp;&nbsp; Continue with Google
+        </a>
+
+
+        <!-- Divider -->
+        <div class="divider">
+            or continue with email
+        </div>
+
+
+        <!-- Login Form -->
+        <form method="post">
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <input
+                type="hidden"
+                name="next"
+                value="{{ next }}"
+            >
+
+            <button
+                type="submit"
+                class="btn"
+                style="width: 100%;"
+            >
+                Login
+            </button>
+
+        </form>
+
+
+        <!-- Authentication Links -->
+        <div class="auth-links">
+
+            <a href="{% url 'password_reset' %}">
+                Forgot password?
+            </a>
+
+            <a href="{% url 'register' %}">
+                Create account
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
