@@ -10,6 +10,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import *
 from .forms import *
+from .models import Place, Review, SavedPlace
 
 def ensure_profile(user): Profile.objects.get_or_create(user=user)
 
@@ -120,17 +121,69 @@ def collection_create(request):
 def collection_detail(request,pk): return render(request,'places/collection_detail.html',{'collection':get_object_or_404(Collection,pk=pk,user=request.user)})
 
 @login_required
-def collection_add_place(request,pk,place_id):
-    c=get_object_or_404(Collection,pk=pk,user=request.user); p=get_object_or_404(Place,pk=place_id); CollectionPlace.objects.get_or_create(collection=c,place=p); return redirect('collection_detail',pk)
+def collection_add_place(request, pk, place_id):
+    collection = get_object_or_404(
+        Collection,
+        pk=pk,
+        user=request.user
+    )
+
+    place = get_object_or_404(
+        Place,
+        pk=place_id,
+        approved=True
+    )
+
+    CollectionPlace.objects.get_or_create(
+        collection=collection,
+        place=place
+    )
+
+    messages.success(
+        request,
+        f"{place.name} added to {collection.name} collection."
+    )
+
+    return redirect("collection_detail", pk=collection.pk)
 
 @login_required
 def profile(request):
-    ensure_profile(request.user); prof=request.user.profile
-    if request.method=='POST':
-        f=ProfileForm(request.POST,request.FILES,instance=prof)
-        if f.is_valid(): f.save(); return redirect('profile')
-    else: f=ProfileForm(instance=prof)
-    return render(request,'places/profile.html',{'form':f,'profile':prof})
+    ensure_profile(request.user)
+    prof = request.user.profile
+
+    if request.method == 'POST':
+        f = ProfileForm(
+            request.POST,
+            request.FILES,
+            instance=prof
+        )
+        if f.is_valid():
+            f.save()
+            return redirect('profile')
+    else:
+        f = ProfileForm(instance=prof)
+
+    places_count = Place.objects.filter(
+        owner=request.user
+    ).count()
+
+    reviews_count = Review.objects.filter(
+        user=request.user
+    ).count()
+
+    saved_count = SavedPlace.objects.filter(
+        user=request.user
+    ).count()
+
+    context = {
+        'form': f,
+        'profile': prof,
+        'places_count': places_count,
+        'reviews_count': reviews_count,
+        'saved_count': saved_count,
+    }
+
+    return render(request, 'places/profile.html', context)
 
 def share_place(request, pk):
     p=get_object_or_404(Place,pk=pk,approved=True)

@@ -1,1 +1,68 @@
-<a class="card" href="{% url 'place_detail' place.pk %}">{% if place.cover %}<img class="card-img" src="{{place.cover.url}}" alt="{{place.name}}">{% else %}<div class="placeholder">📍</div>{% endif %}<div class="cardbody"><span class="tag">{{place.category.name}}</span><h3>{{place.name}}{% if place.owner.profile.is_verified %} <span class="verified-dot">✓</span>{% endif %}</h3><div class="cardmeta">📍 {{place.location}}</div><div class="rating"><span class="stars">{% for i in '12345' %}{% if forloop.counter <= place.average_rating %}★{% else %}☆{% endif %}{% endfor %}</span><strong>{{place.average_rating|floatformat:1}}</strong><span class="muted">({{place.review_count}})</span></div></div></a>
+
+<a class="card" href="{% url 'place_detail' place.pk %}">
+
+    {% if place.cover %}
+        <img
+            class="card-img"
+            src="{{ place.cover.url }}"
+            alt="{{ place.name }}"
+        >
+    {% else %}
+        <div class="placeholder">    <svg viewBox="0 0 24 24" width="16" height="16"
+     fill="black" xmlns="http://www.w3.org/2000/svg">
+  <path d="M12 2C7.6 2 4 5.6 4 10
+    C4 16 12 22 12 22
+    S20 16 20 10C20 5.6 16.4 2 12 2Z"/>
+  <circle cx="12" cy="10" r="3" fill="white"/>
+</svg>   </div>
+    {% endif %}
+
+    <div class="cardbody">
+
+        <span class="tag">
+            {{ place.category.name }}
+        </span>
+
+        <h3>
+            {{ place.name }}
+
+            {% if place.owner.profile.is_verified %}
+                <span class="verified-dot">✓</span>
+            {% endif %}
+        </h3>
+
+        <div class="cardmeta">
+            <svg viewBox="0 0 24 24" width="16" height="16"
+     fill="black" xmlns="http://www.w3.org/2000/svg">
+  <path d="M12 2C7.6 2 4 5.6 4 10
+    C4 16 12 22 12 22
+    S20 16 20 10C20 5.6 16.4 2 12 2Z"/>
+  <circle cx="12" cy="10" r="3" fill="white"/>
+</svg>  {{ place.location }}
+        </div>
+
+        <div class="rating">
+
+            <span class="stars">
+                {% for i in '12345' %}
+                    {% if forloop.counter <= place.average_rating %}
+                        ★
+                    {% else %}
+                        ☆
+                    {% endif %}
+                {% endfor %}
+            </span>
+
+            <strong>
+                {{ place.average_rating|floatformat:1 }}
+            </strong>
+
+            <span class="muted">
+                ({{ place.review_count }})
+            </span>
+
+        </div>
+
+    </div>
+
+</a>
